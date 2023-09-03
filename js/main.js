@@ -65,6 +65,7 @@ function renderTasks() {
       taskItem.classList.add('task');
       taskItem.dataset.status = category;
       taskItem.innerHTML = `
+        <input type="checkbox" class="task-checkbox" value="${task.name}">
         <strong>Tarefa:</strong> ${task.name}<br>
         <strong>Data:</strong> ${task.date}<br>
         <strong>Prioridade:</strong> ${task.priority}<br>
@@ -83,6 +84,25 @@ function renderTasks() {
     taskList.appendChild(column);
   });
 }
+
+function batchAdvance() {
+  const checkboxes = document.querySelectorAll('.task-checkbox:checked');
+
+  checkboxes.forEach(checkbox => {
+    const taskName = checkbox.value;
+    advanceTask(taskName);
+  });
+}
+
+function batchRevert() {
+  const checkboxes = document.querySelectorAll('.task-checkbox:checked');
+
+  checkboxes.forEach(checkbox => {
+    const taskName = checkbox.value;
+    revertTask(taskName);
+  });
+}
+
 
 // Função para remover uma tarefa
 function removeTask(taskName) {
