@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lista de Tarefas</title>
+  <link rel="stylesheet" type="text/css" href="css/styles.css">
+</head>
+
+<body>
+
+<header>
+  <h1 class="titulo">Lista de Tarefas Acelera</h1>
+  <p></p>
+</header>
+
+<div class="container">
+  <section class="section">
+    <div class="toggle-button" onclick="toggleForm()">Adicionar Nova Tarefa</div>
+    <div class="toggle-button" onclick="toggleTaskList()">Listar Tarefas</div>
+    <div class="form-container">
+      <h2>Adicionar Tarefa</h2>
+      <form id="task-form">
+        <label for="task-name">Nome da Tarefa:</label>
+        <input type="text" id="task-name" name="task-name" required><br><br>
+
+        <label for="task-date">Data:</label>
+        <input type="date" id="task-date" name="task-date" required><br><br>
+
+        <label for="task-priority">Prioridade:</label>
+        <select id="task-priority" name="task-priority">
+          <option value="Baixa">Baixa</option>
+          <option value="Média">Média</option>
+          <option value="Alta">Alta</option>
+        </select><br><br>
+
+        <label for="task-category">Categoria:</label>
+        <select id="task-category" name="task-category">
+          <option value="Pessoal">Pessoal</option>
+          <option value="Trabalho">Trabalho</option>
+          <option value="Estudos">Estudos</option>
+        </select><br><br>
+
+        <label for="task-status">Status:</label>
+        <select id="task-status" name="task-status">
+          <option value="TODO">TODO</option>
+          <option value="DOING">DOING</option>
+          <option value="DONE">DONE</option>
+        </select><br><br>
+
+        <label for="task-description">Descrição:</label><br>
+        <textarea id="task-description" name="task-description" rows="4"></textarea><br><br>
+
+        <button type="button" onclick="addTask()">Salvar</button>
+      </form>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="task-list" id="task-list-container">
+      <h2>Lista de Tarefas</h2>
+
+      <select id="task-status-filter" onchange="renderTasks()">
+        <option value="all">Todas</option>
+        <option value="TODO">TODO</option>
+        <option value="DOING">DOING</option>
+        <option value="DONE">DONE</option>
+      </select>
+      <div class="task-columns">
+        <div class="task-column" id="todo-column">
+          <h3>TODO</h3>
+          <ul id="task-list-todo" class="task">
+            <!-- Tarefas TODO -->
+          </ul>
+        </div>
+        <div class="task-column" id="doing-column">
+          <h3>DOING</h3>
+          <ul id="task-list-doing" class="task">
+            <!-- Tarefas DOING -->
+          </ul>
+        </div>
+        <div class="task-column" id="done-column">
+          <h3>DONE</h3>
+          <ul id="task-list-done" class="task">
+            <!-- Tarefas DONE -->
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script src="js/main.js"></script>
+
+</body>
+</html>
