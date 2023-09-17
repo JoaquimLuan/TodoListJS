@@ -1,56 +1,80 @@
 function toggleForm() {
-  let formContainer = document.querySelector('.form-container');
+  const formContainer = document.querySelector('.form-container');
   formContainer.style.display = formContainer.style.display === 'none' || formContainer.style.display === '' ? 'block' : 'none';
 }
 
 function toggleTaskList() {
-  let taskList = document.querySelector('.task-list');
+  const taskList = document.querySelector('.task-list');
   taskList.style.display = taskList.style.display === 'none' || taskList.style.display === '' ? 'block' : 'none';
 }
 
-// Função para adicionar uma tarefa
+function isValidDate(date) {
+  const dateRegex = /^\d{2}\/\d{2}\/\d{4}$/;
+  return dateRegex.test(date);
+}
+
+function isValidPriority(priority) {
+  const priorityRegex = /^(Baixa|Média|Alta)$/;
+  return priorityRegex.test(priority);
+}
+
+function isValidCategory(category) {
+  const validCategories = ['Trabalho', 'Estudos', 'Lazer'];
+  return validCategories.includes(category);
+}
+
+function isValidStatus(status) {
+  const validStatuses = ['TODO', 'DOING', 'DONE'];
+  return validStatuses.includes(status);
+}
+
 function addTask() {
   const taskName = document.getElementById('task-name').value;
-  const taskDate = document.getElementById('task-date').value;
+  const taskDateInput = document.getElementById('task-date');
+  const taskDate = taskDateInput.value;
   const taskPriority = document.getElementById('task-priority').value;
   const taskCategory = document.getElementById('task-category').value;
   const taskStatus = document.getElementById('task-status').value;
   const taskDescription = document.getElementById('task-description').value;
 
-  const task = {
-    name: taskName,
-    date: taskDate,
-    priority: taskPriority,
-    category: taskCategory,
-    status: taskStatus,
-    description: taskDescription,
-  };
 
-  // Verifica se já tem uma tarefas salva no localStorage
-  let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+  function isValidDate(date) {
+    const dateRegex = /^\d{2}\/\d{2}\/\d{4}$/;
+    return dateRegex.test(date);
+  }
 
-  // AdicionA a nova tarefa à lista
-  tasks.push(task);
+  const formattedDate = taskDate.split('-').reverse().join('/');
 
-  // Salva a lista atualizada no localStorage
-  localStorage.setItem('tasks', JSON.stringify(tasks));
+  if (isValidDate(formattedDate)) {
+    const task = {
+      name: taskName,
+      date: formattedDate,
+      priority: taskPriority,
+      category: taskCategory,
+      status: taskStatus,
+      description: taskDescription,
+    };
 
-  // Limpa os campos do formulário
-  document.getElementById('task-form').reset();
+    const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
 
-  // Atualiza a lista de tarefas exibida na página
-  renderTasks();
+    tasks.push(task);
+
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+
+    document.getElementById('task-form').reset();
+
+    renderTasks();
+  } else {
+    alert('Data inválida. Use o formato DD/MM/AAAA.');
+  }
 }
 
-// Função para exibir tarefas na página
 function renderTasks() {
-
   const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
   const taskList = document.getElementById('task-list-container');
 
   taskList.innerHTML = '';
 
-  // Criar colunas para categorias "TODO," "DOING," e "DONE"
   const categories = ['TODO', 'DOING', 'DONE'];
 
   categories.forEach(category => {
@@ -103,21 +127,15 @@ function batchRevert() {
   });
 }
 
-
-// Função para remover uma tarefa
 function removeTask(taskName) {
   let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
-
   tasks = tasks.filter(task => task.name !== taskName);
-
   localStorage.setItem('tasks', JSON.stringify(tasks));
-
   renderTasks();
 }
 
 function advanceTask(taskName) {
   let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
-
   const taskIndex = tasks.findIndex(task => task.name === taskName);
 
   if (taskIndex !== -1) {
@@ -140,7 +158,6 @@ function advanceTask(taskName) {
 
 function revertTask(taskName) {
   let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
-
   const taskIndex = tasks.findIndex(task => task.name === taskName);
 
   if (taskIndex !== -1) {
@@ -183,6 +200,4 @@ function editTask(taskName) {
   }
 }
 
-
-// Exibir as tarefas quando a página carregar
 window.onload = renderTasks();

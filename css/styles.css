@@ -1,5 +1,5 @@
 body {
-  background: url("/img/img.png");
+  background: url("../img/img.png");
   background-size: cover;
   position: relative;
 
